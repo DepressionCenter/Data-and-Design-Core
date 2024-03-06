@@ -4,6 +4,7 @@
 
 ## Description
 Code developed by or granted to the EFDC Data and Design Core team.
+For additional R code, see: https://rpubs.com/emurbanw
 
 
 
@@ -37,6 +38,8 @@ If you need assistance identifying a contact person, email the EFDC's Mobile Tec
 ## Credits
 #### Contributors:
 + Eisenberg Family Depression Center [(@DepressionCenter)](https://github.com/DepressionCenter/)
++ Emily Urban-Wojcik [(emurbanw)](https://rpubs.com/emurbanw)
++ Meghan Seewald (https://mcommunity.umich.edu/person/mseewald)
 + Gabriel Mongefranco [(@gabrielmongefranco)](https://github.com/gabrielmongefranco)
 
 
