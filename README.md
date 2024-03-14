@@ -4,7 +4,6 @@
 
 ## Description
 Code developed by or granted to the EFDC Data and Design Core team.
-For additional R code, see: https://rpubs.com/emurbanw
 
 
 
