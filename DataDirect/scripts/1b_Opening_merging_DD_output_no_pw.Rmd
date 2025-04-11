@@ -1,0 +1,95 @@
+---
+title: "Opening & merging DD output views (no password protection)"
+author: "Emily Urban-Wojcik"
+date: "2025-04-11"
+output: html_document
+---
+
+# Note
+This script opens data downloaded from University of Michigan's DataDirect tool. Data download as xlsx files with multiple worksheets within one workbook. This script opens each worksheet then merges them together to make one dataframe with all downloaded variables. This uses readxl to open non-password-protected excel sheets. 
+
+# Loading libraries/packages & paths
+```{r, message = FALSE, results = 'hide', warning = FALSE}
+
+# Un-comment and run the below lines to install these packages if you don't already have them
+# install.packages("readxl")
+# install.packages("openxlsx")
+# install.packages("rstudioapi") 
+# install.packages("dplyr")
+# install.packages("fst")
+
+# Opening the packages we need
+library(readxl) # used to read excel files with read_excel
+library(openxlsx) # used to write excel files with write.xlsx
+library(rstudioapi) # to ask for a password when opening xlsx file
+library(dplyr) # used here for merging dataframes (full_join)
+library(fst) # lightning fast serialization of data frames for R (saves data in smaller file sizes; loads more quickly)
+
+# Creating data paths; Replace with your own path; This assumes you have separate directories for raw and cleaned data within your data directory
+# Note that Dropbox Teams folders are considered acceptable to use with PHI
+setwd("/Users/emurbanw/University of Michigan Dropbox/MED-EFDC-DDC-internal/Example_code/DataDirect/data/raw/")
+clean_data_path <- "/Users/emurbanw/University of Michigan Dropbox/MED-EFDC-DDC-internal/Example_code/DataDirect/data/clean/"
+
+# What are the sheet names in the xlsx datafile?
+Sheets <- excel_sheets("Example_DD_data.xlsx")
+print(Sheets)
+
+```
+
+# Opening each output view
+## Demographics
+```{r, message = FALSE, results = 'hide', warning = FALSE}
+
+# Opening the worksheet
+demos <- read_excel("Example_DD_data.xlsx", sheet = "DemographicInfo")
+
+```
+
+## Encounters
+```{r, message = FALSE, results = 'hide', warning = FALSE}
+
+# Opening the worksheet
+encounters <- read_excel("Example_DD_data.xlsx", sheet = "EncounterAll")
+
+# reformatting date in a way that is recognized by R
+# AdmitDate is the date of the encounter. The date returned will be based on an algorithm that chooses the first non-null value available from the following list (in that order): HospitalAdmissionDate, CheckinTime, AppointmentTime, EncounterInstantDate, EncounterContactDate.
+encounters$encounter_date <- as.POSIXct(encounters$AdmitDate, format = "%m/%d/%Y")
+
+```
+
+## Diagnoses
+```{r, message = FALSE, results = 'hide', warning = FALSE}
+
+# Opening the worksheets (there are two in this case with data from DiagnosesEverything; this is typically because there was too much data to fit into one worksheet for this output view for download)
+diagnoses1 <- read_excel("Example_DD_data.xlsx", sheet = "DiagnosesEverything")
+diagnoses2 <- read_excel("Example_DD_data.xlsx", sheet = "DiagnosesEverything (part 2)")
+
+# Appending all dataframes starting with the same root and ending with the relevant numbers; NEED TO UPDATE THIS BASED ON NUMBER OF SHEETS
+# Because there shouldn't be any overlap between a specific visit diagnosis between sheets, we append rather than merge
+diagnoses <- do.call(rbind, mget(paste0("diagnoses", 1:2)))
+
+# Checking that the number of rows matches after appending (should == TRUE); NEED TO UPDATE THIS BASED ON NUMBER OF SHEETS
+nrow(diagnoses) == sum(sapply(1:2, function(i) nrow(get(paste0("diagnoses", i)))))
+
+```
+
+# Combining output views & saving
+```{r, message = FALSE, results = 'hide', warning = FALSE}
+
+# Merging ("joining") output views; full_join keeps all observations from each dataframe; 
+# The first instance of this joins by patient, as there can be multiple encounters within each patient;
+# The second instance of this joins by patient AND by encounter, as there can be multiple diagnoses within encounter
+data <- full_join(demos, encounters, by = c("PatientID"))
+data <- full_join(data, diagnoses, by = c("PatientID", "EncounterID"))
+
+# Checking the number of unique patients and encounters in this worksheet
+length(unique(data$PatientID))
+length(unique(data$EncounterID))
+
+# Saving as fst
+write.fst(data, (paste0(clean_data_path, "Example_data_merged.fst")))
+
+# # You can instead save as a csv file, which will then allow you to then password encrypt manually if you wish
+# write.xlsx(data, ((paste0(clean_data_path, "Example_data_merged.xlsx"))))
+
+```
