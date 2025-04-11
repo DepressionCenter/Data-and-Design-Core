@@ -28,8 +28,8 @@ library(fst) # lightning fast serialization of data frames for R (saves data in 
 
 # Setting your working directory and creating data paths; Replace with your own path; This assumes you have separate directories for raw and cleaned data within your data directory
 # Note that Dropbox Teams folders are considered acceptable to use with PHI
-setwd("/Users/emurbanw/University of Michigan Dropbox/MED-EFDC-DDC-internal/Example_code/DataDirect/data/raw/")
-clean_data_path <- "/Users/emurbanw/University of Michigan Dropbox/MED-EFDC-DDC-internal/Example_code/DataDirect/data/clean/"
+setwd("/INSERT_YOUR_PATH_HERE/DataDirect/data/raw/")
+clean_data_path <- "/INSERT_YOUR_PATH_HERE/DataDirect/data/clean/"
 pw_message <- "Input password for excel sheet."
 
 # Loading the xlsx workbook; Note that if your xlsx file is not password encrypted you can type anything into the pw box (or just remove the password call in the code below)
