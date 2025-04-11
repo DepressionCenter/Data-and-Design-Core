@@ -27,8 +27,8 @@ library(fst) # lightning fast serialization of data frames for R (saves data in 
 
 # Creating data paths; Replace with your own path; This assumes you have separate directories for raw and cleaned data within your data directory
 # Note that Dropbox Teams folders are considered acceptable to use with PHI
-setwd("/Users/emurbanw/University of Michigan Dropbox/MED-EFDC-DDC-internal/Example_code/DataDirect/data/raw/")
-clean_data_path <- "/Users/emurbanw/University of Michigan Dropbox/MED-EFDC-DDC-internal/Example_code/DataDirect/data/clean/"
+setwd("/INSERT_YOUR_PATH_HERE/DataDirect/data/raw/")
+clean_data_path <- "/INSERT_YOUR_PATH_HERE/DataDirect/data/clean/"
 
 # What are the sheet names in the xlsx datafile?
 Sheets <- excel_sheets("Example_DD_data.xlsx")
