@@ -1,0 +1,78 @@
+---
+title: "3_Analyses"
+author: "Emily Urban-Wojcik"
+date: "2025-04-16"
+output: html_document
+---
+
+# Note
+This script provides a very simple structure for how you might start to look at prevelance estimates using DataDirect data. It begins by looking at descriptive statistics of the sample then moves to a formal chi-square analysis, which can tell you whether the proportion of individuals who are in one diagnosis category differs by whether or not they are also in the other diagnosis category. 
+
+# Loading libraries/packages & paths
+```{r}
+
+# Un-comment and run the below lines to install these packages if you don't already have them
+# install.packages("psych")
+# install.packages("dplyr")
+# install.packages("fst")
+# install.packages("car")             
+# install.packages("multcomp")        
+# install.packages("ggplot2")
+# install.packages("jtools")
+
+# Opening the packages we need
+library(psych)
+library(dplyr)
+library(fst)
+library(ggplot2)
+library(jtools)
+
+# Set your working directory; Replace with your own path; This assumes you have separate directories for raw and cleaned data within your data directory
+setwd("/Users/emurbanw/University of Michigan Dropbox/MED-EFDC-DDC-internal/Tools_to_Share/DataDirect/data/clean/")
+
+# Opening data
+patient_lev <- read.fst("Example_pt_level_summary_data.fst")
+
+```
+
+# Descriptives
+```{r}
+
+# 5 patients
+length(unique(patient_lev$PatientID))
+
+# ADHD + MDD  ADHD only 
+#          2          2 
+table(patient_lev$Group)
+
+#    vars n mean    sd median trimmed  mad min max range skew kurtosis   se
+# X1    1 4 36.5 19.67     31    36.5 12.6  20  64    44 0.49    -1.89 9.84
+describe(patient_lev$age_at_first_ADHD_dx)
+
+# Female   Male 
+#   2       3  
+table(patient_lev$GenderName)
+
+# Female   Male 
+#      1      3
+table(patient_lev$GenderName[!is.na(patient_lev$Group)])
+
+ # A AA  C 
+ # 1  1  3
+table(patient_lev$RaceCode)
+
+```
+
+# Chi-square
+```{r}
+
+# Counts/Percentages of patients in each Group that are Male vs. Female
+table_data <- table(patient_lev$MDD_ny, patient_lev$ADHD_ny)
+table_data
+prop.table(table_data, margin = 2) * 100 # percentages within group
+
+# Testing for group differences
+chi2 <- table(patient_lev$MDD_ny, patient_lev$ADHD_ny)
+chisq.test(chi2)
+
+```

@@ -1,0 +1,202 @@
+---
+title: "Flagging_Diagnoses"
+author: "Emily Urban-Wojcik"
+date: "2025-04-16"
+output: html_document
+---
+
+# Note
+This script opens data from Michigan Medicine's DataDirect that were merged together in the previous script. It then flags each row for ADHD or MDD diagnoses. Then, it creates patient-level summaries of diagnoses, including first diagnosis date, number of diagnoses, and age at diagnosis.  
+
+# Loading libraries/packages & paths
+```{r, message = FALSE, results = 'hide', warning = FALSE}
+
+# Un-comment and run the below lines to install these packages if you don't already have them
+# install.packages("fst")
+# install.packages("psych")
+# install.packages("stringr")
+# install.packages("dplyr")
+# install.pakcages("tidyr")
+
+# Opening the packages we need
+library(fst) # lightning fast serialization of data frames for R (saves data in smaller file sizes; loads more quickly)
+library(psych) # package for psychometric research (e.g., describe)
+library(stringr) # for string operations
+library(dplyr) # for data manipulation 
+library(tidyr) # for pivot_wider to reshape data
+
+# Set your working directory; Replace with your own path; This assumes you have separate directories for raw and cleaned data within your data directory
+setwd("/Users/emurbanw/University of Michigan Dropbox/MED-EFDC-DDC-internal/Tools_to_Share/DataDirect/data/clean/")
+
+# 5 patients
+data <- read.fst("Example_data_merged.fst")
+length(unique(data$PatientID)) 
+
+```
+
+# Flagging diagnoses
+## ADHD diagnosis
+Flagging rows as 0/1 for if they have a code for ADHD
+```{r}
+
+data$ADHD_dx <- ifelse(data$TermCodeMapped == "F90" | 
+  data$TermCodeMapped == "F90.0" | 
+  data$TermCodeMapped == "F90.1" | 
+  data$TermCodeMapped == "F90.2" | 
+  data$TermCodeMapped == "F90.8" | 
+  data$TermCodeMapped == "F90.9" | 
+  data$TermCodeMapped == "314.0" | 
+  data$TermCodeMapped == "314.00" | 
+  data$TermCodeMapped == "314.01", 1, 0)
+
+# 8 diagnoses across 5 patients
+table(data$ADHD_dx)
+length(unique(data$PatientID[data$ADHD_dx==1]))
+
+```
+
+## Major Depressive Disorder
+```{r}
+
+##############################################################################
+# MDD single episode
+
+data$MDD_single <- ifelse(# ICD-10
+  data$TermCodeMapped ==  "F32" | 
+  data$TermCodeMapped ==  "F32.0" | 
+  data$TermCodeMapped ==  "F32.1" | 
+  data$TermCodeMapped ==  "F32.2" | 
+  data$TermCodeMapped ==  "F32.3" | 
+  data$TermCodeMapped ==  "F32.4" | 
+  data$TermCodeMapped ==  "F32.5" | 
+  data$TermCodeMapped ==  "F32.8" | 
+  data$TermCodeMapped ==  "F32.89" | 
+  data$TermCodeMapped ==  "F32.9" | 
+  data$TermCodeMapped ==  "F32.A" | 
+  # ICD-9
+  data$TermCodeMapped == "296.2" | 
+  data$TermCodeMapped ==  "296.20" | 
+  data$TermCodeMapped ==  "296.21" | 
+  data$TermCodeMapped ==  "296.22" | 
+  data$TermCodeMapped ==  "296.23" | 
+  data$TermCodeMapped ==  "296.24" | 
+  data$TermCodeMapped ==  "296.25" | 
+  data$TermCodeMapped ==  "296.26", 1, 0)
+
+##############################################################################
+# MDD recurrent episode
+
+data$MDD_recurrent <- ifelse(# ICD-10
+  data$TermCodeMapped ==  "F33" | 
+  data$TermCodeMapped ==  "F33.0" | 
+  data$TermCodeMapped ==  "F33.1" | 
+  data$TermCodeMapped ==  "F33.2" | 
+  data$TermCodeMapped ==  "F33.3" | 
+  data$TermCodeMapped ==  "F33.4" | 
+  data$TermCodeMapped ==  "F33.40" | 
+  data$TermCodeMapped ==  "F33.41" | 
+  data$TermCodeMapped ==  "F33.42" | 
+  data$TermCodeMapped ==  "F33.8" | 
+  data$TermCodeMapped ==  "F33.9" | 
+  # ICD-9
+  data$TermCodeMapped ==  "296.3" | 
+  data$TermCodeMapped ==  "296.30" | 
+  data$TermCodeMapped ==  "296.31" | 
+  data$TermCodeMapped ==  "296.32" | 
+  data$TermCodeMapped ==  "296.33" | 
+  data$TermCodeMapped ==  "296.34" | 
+  data$TermCodeMapped ==  "296.35" | 
+  data$TermCodeMapped ==  "296.36", 1, 0)
+
+table(data$MDD_single) # 2
+table(data$MDD_recurrent) # 0
+
+# Combining single and recurrent into one variable
+data$MDD_dx <- ifelse(data$MDD_single==1 | data$MDD_recurrent==1, 1, 0)
+
+table(data$MDD_dx) # 2
+
+```
+## Saving flagged diagnoses
+```{r}
+
+write.fst(data, "Example_data_merged_flagged.fst")
+
+```
+# Patient-Level Summary
+Here we'll create a summary dataframe with just 1 row per patient
+It will tell us everything we need to know for an analysis based on the long dataframe
+```{r}
+
+# Re-opening flagged data if necessary
+data_flagged <- read.fst("Example_data_merged_flagged.fst")
+
+################################################################################
+# Making our summary dataframes (we will append them back together later)
+
+# Summarizing the number of ADHD and MDD diagnoses (within patient)
+summary <- data_flagged %>%
+  arrange(PatientID, encounter_date) %>%
+  group_by(PatientID) %>%
+  summarize(num_ADHD_dx = sum(ADHD_dx, na.rm = TRUE),
+            num_MDD_dx = sum(MDD_dx, na.rm = TRUE))
+
+# Summarizing only the rows (within patient) where there's an ADHD diagnosis
+first_ADHD <- data_flagged %>%
+  arrange(PatientID, encounter_date) %>%
+  filter(ADHD_dx == 1) %>%
+  group_by(PatientID) %>%
+  summarize(first_ADHD_date = min(encounter_date),
+            age_at_first_ADHD_dx = AgeInYears[which.min(encounter_date)])
+
+# Summarizing the rows (within Patient) where there's a MDD diagnosis
+first_MDD <- data_flagged %>%
+  arrange(PatientID, encounter_date) %>%
+  filter(MDD_dx == 1) %>%
+  group_by(PatientID) %>%
+  summarize(first_MDD_date = min(encounter_date),
+            age_at_first_MDD_dx = AgeInYears[which.min(encounter_date)])
+
+################################################################################
+# Merging the summary data together
+
+patient_lev <- full_join(summary, first_ADHD, by = "PatientID")
+patient_lev <- full_join(patient_lev, first_MDD, by = "PatientID")
+
+################################################################################
+# Re-joining with demographic information
+
+# Making a separate dataframe for the demos
+demos <- data_flagged[ ,c("PatientID", "GenderCode", "GenderName", "RaceCode")]
+
+# This only keeps rows with distinct information (i.e., gets rid of all redundant duplicate info) 
+demos <- demos %>%
+  distinct()
+
+# Joining demos back with the patient_level data
+patient_lev <- full_join(demos, patient_lev)
+
+```
+
+# Categorizing
+Categorizing patients have either having (1) or not having (1) any diagnosis for ADHD or MDD based on whether the first diagnosis date is NA or not
+```{r}
+
+patient_lev <- patient_lev %>%
+  mutate(ADHD_ny = ifelse(is.na(first_ADHD_date), 0, 1),
+         MDD_ny = ifelse(is.na(first_MDD_date), 0, 1))
+
+# 4 patients w/ ADHD
+table(patient_lev$ADHD_ny)
+
+# 2 patients w/ MDD
+table(patient_lev$MDD_ny)
+
+```
+
+# Saving patient_level summary data
+```{r}
+
+write.fst(patient_lev, "Example_pt_level_summary_data.fst")
+
+```
