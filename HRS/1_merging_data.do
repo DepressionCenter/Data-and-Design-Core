@@ -3,6 +3,9 @@
 
 NOTE:
 
+Author: Emily Urban-Wojcik, emurbanw@med.umich.edu
+Date: April 2025
+
 RAND-cleaned HRS data for this script can be downloaded (after registration with HRS) from: https://hrsdata.isr.umich.edu/data-products/rand?_gl=1*13qxjg3*_ga*ODE2NTc1MzUxLjE3NDAxNDkwNTI.*_ga_FF28MW3MW2*MTc0NDcyMjAxOS45LjAuMTc0NDcyMjAxOS4wLjAuMA..
 
 In this script we:
