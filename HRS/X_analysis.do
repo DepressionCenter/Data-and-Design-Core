@@ -3,6 +3,9 @@
 
 NOTE:
 
+Author: Emily Urban-Wojcik, emurbanw@med.umich.edu
+Date: April 2025
+
 This script is intended to be run after all variables have been cleaned and analyses are pre-registered. 
 
 For cross-sectional analyses, we can incorporate complex design features to make generalizations about the entire population
