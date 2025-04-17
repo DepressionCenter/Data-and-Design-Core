@@ -72,7 +72,7 @@ Free Documentation License". If not, see <https://www.gnu.org/licenses/fdl-1.3-s
 
 
 ## Citation
-If you find this repository, code or paper useful for your research, please cite it.
+If you find this repository, code or paper useful for your research, please cite it as: "Data & Design Core of the Eisenberg Family Depression Center at the University of Michigan. (2025). DepressionCenter/Data-and-Design-Core (Version X.X.X) [Computer software]. GitHub. https://github.com/DepressionCenter/Data-and-Design-Core"
 
 ----
 
