@@ -1,15 +1,16 @@
 cff-version: 1.2.0
 message: "If you use this repository, please cite it as below."
 title: "Data and Design Core"
-authors:
-  - name: "Data & Design Core of the Eisenberg Family Depression Center"
-    affiliation: "University of Michigan"
+version: "1.0.1"
+doi: 10.5281/zenodo.15242758
 date-released: "2023-05-01"
-version: "1.1.0"  # Update this if you've tagged a new release
 repository-code: "https://github.com/DepressionCenter/Data-and-Design-Core"
 license: "GPL-3.0"
 type: software
 url: "https://github.com/DepressionCenter/Data-and-Design-Core"
+authors:
+  - name: "Data & Design Core of the Eisenberg Family Depression Center"
+    affiliation: "University of Michigan"
 preferred-citation:
   type: software
   title: "Data and Design Core"
@@ -18,3 +19,4 @@ preferred-citation:
       affiliation: "University of Michigan"
   year: 2025
   url: "https://github.com/DepressionCenter/Data-and-Design-Core"
+  doi: 10.5281/zenodo.15242758
