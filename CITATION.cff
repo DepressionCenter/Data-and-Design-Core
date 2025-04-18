@@ -12,7 +12,6 @@ authors:
   - name: "Data & Design Core of the Eisenberg Family Depression Center"
     affiliation: "University of Michigan"
 preferred-citation:
-  type: software
   title: "Data and Design Core"
   authors:
     - name: "Data & Design Core of the Eisenberg Family Depression Center"
@@ -20,3 +19,4 @@ preferred-citation:
   year: 2025
   url: "https://github.com/DepressionCenter/Data-and-Design-Core"
   doi: 10.5281/zenodo.15242758
+  version: "v1.0.1"
