@@ -1,24 +1,9 @@
 
 /* 
 
-NOTE:
-
 Author: Emily Urban-Wojcik, emurbanw@med.umich.edu
 Created: April 2025
 Updated: March 9, 2026
-
-RAND-cleaned HRS data for this script can be downloaded (after registration with HRS) from: https://hrsdata.isr.umich.edu/data-products/rand?_gl=1*13qxjg3*_ga*ODE2NTc1MzUxLjE3NDAxNDkwNTI.*_ga_FF28MW3MW2*MTc0NDcyMjAxOS45LjAuMTc0NDcyMjAxOS4wLjAuMA..
-
-In this script we:
-1) Set up our environment
-2) Open the RAND HRS longitudinal file, trim to the variables we need, and save a trimmed version
-3) Open each RAND HRS fat file, trim to the variables we need, and save a trimmed version
-4) Merge the longitudinal and fat files, and save the merged file
-
-
-*/
-
-/*
 
 Copyright © 2026 The Regents of the University of Michigan
 
@@ -31,6 +16,18 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along
 with this program. If not, see <https:#www.gnu.org/licenses/>.
+
+**********
+
+NOTE:
+
+RAND-cleaned HRS data for this script can be downloaded (after registration with HRS) from: https://hrsdata.isr.umich.edu/data-products/rand?_gl=1*13qxjg3*_ga*ODE2NTc1MzUxLjE3NDAxNDkwNTI.*_ga_FF28MW3MW2*MTc0NDcyMjAxOS45LjAuMTc0NDcyMjAxOS4wLjAuMA..
+
+In this script we:
+1) Set up our environment
+2) Open the RAND HRS longitudinal file, trim to the variables we need, and save a trimmed version
+3) Open each RAND HRS fat file, trim to the variables we need, and save a trimmed version
+4) Merge the longitudinal and fat files, and save the merged file
 
 */
 
