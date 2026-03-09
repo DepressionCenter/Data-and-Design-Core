@@ -4,7 +4,8 @@
 NOTE:
 
 Author: Emily Urban-Wojcik, emurbanw@med.umich.edu
-Date: April 2025
+Created: April 2025
+Updated: March 9, 2026
 
 RAND-cleaned HRS data for this script can be downloaded (after registration with HRS) from: https://hrsdata.isr.umich.edu/data-products/rand?_gl=1*13qxjg3*_ga*ODE2NTc1MzUxLjE3NDAxNDkwNTI.*_ga_FF28MW3MW2*MTc0NDcyMjAxOS45LjAuMTc0NDcyMjAxOS4wLjAuMA..
 
@@ -14,6 +15,22 @@ In this script we:
 3) Open each RAND HRS fat file, trim to the variables we need, and save a trimmed version
 4) Merge the longitudinal and fat files, and save the merged file
 
+
+*/
+
+/*
+
+Copyright © 2026 The Regents of the University of Michigan
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License along
+with this program. If not, see <https:#www.gnu.org/licenses/>.
 
 */
 
