@@ -2,8 +2,8 @@
 /* 
 
 Author: Emily Urban-Wojcik, emurbanw@med.umich.edu
-Created: April 2025
-Updated: March 9, 2026
+Date: April 2025
+Updated: March 10, 2026
 
 Copyright © 2026 The Regents of the University of Michigan
 
@@ -55,7 +55,7 @@ set maxvar 20000
 ******************************************************************************
 
 * Open the longitudinal file
-use HRS_RAND_1992_2020/randhrs1992_2020v2.dta, clear
+use "HRS_RAND_1992_2020/randhrs1992_2020v2.dta", clear
 
 * list variables we want to keep in our trimmed file
 keep hhidpn ragender raedyrs raeduc raracem rahispan hacohort racohbyr rabyear rabmonth rabdate rahrsamp /// demographics and sample cohort variables
@@ -66,6 +66,10 @@ r2cesd r3cesd r4cesd r5cesd r6cesd r7cesd r8cesd r9cesd r10cesd r11cesd r12cesd 
 r1cancre r2cancre r3cancre r4cancre r5cancre r6cancre r7cancre r8cancre r9cancre r10cancre r11cancre r12cancre r13cancre r14cancre r15cancre /// ever had cancer
 r1iwstat r2iwstat r3iwstat r4iwstat r5iwstat r6iwstat r7iwstat r8iwstat r9iwstat r10iwstat r11iwstat r12iwstat r13iwstat r14iwstat r15iwstat /// interview status (responded, no response, etc.)
 r1psyche r2psyche r3psyche r4psyche r5psyche r6psyche r7psyche r8psyche r9psyche r10psyche r11psyche r12psyche r13psyche r14psyche r15psyche /// ever had psychological problems
+r9lblonely11 r10lblonely11 r11lblonely11 r12lblonely11 r13lblonely11 r8lbcomp r9lbcomp r10lbcomp r11lbcomp r12lbcomp r13lbcomp r14lbcomp r15lbcomp /// loneliness item, leave behind completed indicator
+h1child h2child h3child h4child h5child h6child h7child h8child h9child h10child h11child h12child h13child h14child h15child /// number of living children
+h1hhres h2hhres h3hhres h4hhres h5hhres h6hhres h7hhres h8hhres h9hhres h10hhres h11hhres h12hhres h13hhres h14hhres h15hhres /// number of people in household
+r1mstat r2mstat r3mstat r4mstat r5mstat r6mstat r7mstat r8mstat r9mstat r10mstat r11mstat r12mstat r13mstat r14mstat r15mstat // martial status
 
 * Sort by respondent ID
 sort hhidpn
@@ -100,10 +104,13 @@ sort hhidpn
 save "trimmed_files/HRS_RAND_2018_trimmed.dta", replace
 
 use HRS_RAND_2016/h16f2c.dta, clear
-keep hhidpn pc018 pc019 pc020 pc021m1 pc021m2 pc021m3 pc021m4 pc021m5 pc021m6 pc021m7 pc023 pc024 pc028 pc029 pz103 pc150 pc151 pc152 pc153 pc154 ///
+keep hhidpn pb034 pc018 pc019 pc020 pc021m1 pc021m2 pc021m3 pc021m4 pc021m5 pc021m6 pc021m7 pc023 pc024 pc028 pc029 pz103 pc150 pc151 pc152 pc153 pc154 ///
 pc155 pc156 pc157 pc158 pc159 pc160 pc161 pc162 pc163 pc164 pc165 pc166 pc167 pc168 pc169 pc170 pc171 pc172 pc173 pc174 pc175 pc176 pc177 ///
 pc178 pc179 pc180 pc181 pc182 pn175 pn365 pc065 ///
-plb018g	plb018h	plb018i	plb018j	plb076	plb034e	plb035 plb035a_5
+plb006 plb010 plb014 plb001b plb001c plb001d plb001e plb001f plb001g plb001u pb082 ///
+plb005 plb008a plb008b plb008c plb008d plb012a plb012b plb012c plb012d plb016a plb016b plb016c plb016d ///
+plb018g	plb018h	plb018i	plb018j plb019a plb019b plb019c plb019d plb019e plb019f plb019g plb019h plb019i plb019j plb019k ///
+plb076	plb034e	plb035 plb035a_5
 sort hhidpn 
 save "trimmed_files/HRS_RAND_2016_trimmed.dta", replace
 
@@ -111,7 +118,10 @@ use HRS_RAND_2014/h14f2b.dta, clear
 keep hhidpn oc018 oc019 oc020 oc021m1 oc021m2 oc021m3 oc021m4 oc021m5 oc021m6 oc021m7 oc023 oc024 oc028 oc029 oz103 oc150 oc151 oc152 oc153 ///
 oc154 oc155 oc156 oc157 oc158 oc159 oc160 oc161 oc162 oc163 oc164 oc165 oc166 oc167 oc168 oc169 oc170 oc171 oc172 oc173 oc174 oc175 oc176 ///
 oc177 oc178 oc179 oc180 oc181 oc182 on175 on365 oc065 ov351 ov352 ///
-olb018g	olb018h	olb018i	olb018j olb034e olb035 olb076 olb035a_5
+olb006 olb010 olb014 olb001b olb001c olb001d olb001e olb001f olb001g olb001u ob034 ob082 ///
+olb005 olb008a olb008b olb008c olb008d olb012a olb012b olb012c olb012d olb016a olb016b olb016c olb016d ///
+olb018g	olb018h	olb018i	olb018j olb019a olb019b olb019c olb019d olb019e olb019f olb019g olb019h olb019i olb019j olb019k ///
+olb034e olb035 olb076 olb035a_5
 sort hhidpn
 save "trimmed_files/HRS_RAND_2014_trimmed.dta", replace
 
@@ -262,4 +272,3 @@ rename _merge merge1992
 
 * Saving the merged data
 save "HRS_RAND_allyears_trimmed_merged.dta", replace
-
