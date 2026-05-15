@@ -3,7 +3,7 @@
 # Data and Design Core
 
 ## Description
-Code developed by or granted to the EFDC Data and Design Core team.
+A collection of data tools that can be used for mental health research with secondary data. Tools can be used for study organization (including mental health ICD codes and study workflow templates) as well as data cleaning and analysis (in R and Stata). Datasets that are highlighted include the Health and Retirement Study, Michigan Medicine's Data Direct, and more to come.
 
 
 
@@ -14,7 +14,7 @@ Code developed by or granted to the EFDC Data and Design Core team.
 
 
 ## Documentation
-None.
+For full documentation, please reach out to the Data and Design team, or check our knowledge base at: https://michmed.org/efdc-kb.
 
 
 ## Additional Resources
@@ -44,7 +44,7 @@ If you need assistance identifying a contact person, email the EFDC's Mobile Tec
 
 
 #### This work is based in part on the following projects, libraries and/or studies:
-None.
+See individual project folders.
 
 
 
