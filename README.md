@@ -5,6 +5,7 @@
 ## Description
 A collection of data tools that can be used for mental health research with secondary data. Tools can be used for study organization (including mental health ICD codes and study workflow templates) as well as data cleaning and analysis (in R and Stata). Datasets that are highlighted include the Health and Retirement Study, Michigan Medicine's Data Direct, and more to come.
 
+![Data and Design Core Chart Example](/images/Data-and-Design-Core.png "Sample chart")
 
 
 ## Quick Start Guide
