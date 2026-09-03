@@ -3,7 +3,9 @@
 # Data and Design Core
 
 ## Description
-A collection of data tools that can be used for mental health research with secondary data. Tools can be used for study organization (including mental health ICD codes and study workflow templates) as well as data cleaning and analysis (in R and Stata). Datasets that are highlighted include the Health and Retirement Study, Michigan Medicine's Data Direct, and more to come.
+Data and Design Core is an open-source collection of R, Stata, and workflow resources for secondary-data mental health research. It includes mental health ICD code references, study-organization templates, and reproducible examples for data cleaning, statistical analysis, and visualization.
+Resources utilize datasets such as the Health and Retirement Study and Michigan Medicine DataDirect and are intended for investigators, analysts, and research staff who want to start analyses faster or adapt proven workflows to new studies.
+
 
 ![Data and Design Core Chart Example](/images/Data-and-Design-Core.png "Sample chart")
 
